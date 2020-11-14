@@ -1,16 +1,19 @@
 package First;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BankUI {
 	private Scanner input;
+	private Bank myBank;
 	public BankUI() {
 		input = new Scanner(System.in);
+		myBank = new Bank();
 	}
 	public int showMenu() {
 		
 		System.out.println("-----BANK MENU-----");
-		System.out.println("--1. Open Account--");
+		System.out.println("--1. Open Deposit Account--");
 		System.out.println("--2. List Accounts-");
 		System.out.println("--3. Make Deposit--");
 		System.out.println("------9. Exit------");
@@ -20,13 +23,26 @@ public class BankUI {
 	}
 	
 	public void OpenAccount() {
-		System.out.println("Open Account press any key");
-		input.next();
+		System.out.println("Open Account please specify opening balance");
+		double balance =0;
+		try {
+			balance = Double.parseDouble(input.next());
+		}
+		catch (NumberFormatException e) {
+			System.out.println("Invalid Balance (not numeric). Returning to Main Menu.");
+			return;
+		}
+		DepositAccount d = new DepositAccount();
+		d.Open(myBank.getNextAccountNumber(), balance);
+		myBank.getAccounts().add(d);
 	}
 	
 	public void ListAccounts() {
-		System.out.println("List Accounts press any key");
-		input.next();
+		ArrayList<Account> banksAccounts = myBank.getAccounts();
+		System.out.println("List of Accounts at the Bank");
+		for(Account a : banksAccounts) {
+			System.out.println(a.toString());
+		}
 	}
 	
 	public void MakeDeposit() {
